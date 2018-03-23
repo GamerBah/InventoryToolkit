@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"com.gamerbah.inventorytoolkit","l":"ClickEvent"},{"p":"com.gamerbah.inventorytoolkit","l":"ClickEvent.Type"},{"p":"com.gamerbah.inventorytoolkit","l":"GameInventory"},{"p":"com.gamerbah.inventorytoolkit","l":"InventoryBuilder"},{"p":"com.gamerbah.inventorytoolkit","l":"ItemBuilder"}]

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="InventoryToolkit">
+    <output-path>$PROJECT_DIR$/../../Compiled Plugins</output-path>
+    <root id="archive" name="InventoryToolkit.jar">
+      <element id="module-output" name="InventoryToolkit" />
+    </root>
+  </artifact>
+</component>
