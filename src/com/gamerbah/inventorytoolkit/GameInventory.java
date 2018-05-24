@@ -1,6 +1,7 @@
 package com.gamerbah.inventorytoolkit;
 /* Created by GamerBah on 7/22/2017 */
 
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -21,6 +22,8 @@ public class GameInventory implements InventoryHolder {
     @Getter
     @Setter
     private Inventory inventory;
+    @Getter
+    private String name;
     @Getter
     private int itemCount = 0;
     @Getter
@@ -58,6 +61,7 @@ public class GameInventory implements InventoryHolder {
      */
     public GameInventory(final String name, final int itemCount, final int size, final GameInventory previousInventory) {
         this.inventory = Bukkit.getServer().createInventory(this, size, name);
+        this.name = name;
         this.itemCount = itemCount;
         this.previousInventory = previousInventory;
     }
@@ -150,11 +154,7 @@ public class GameInventory implements InventoryHolder {
      * @return the list of buttons, deep copied
      */
     public HashMap<Integer, ItemBuilder> getButtons() {
-        HashMap<Integer, ItemBuilder> map = new HashMap<>();
-        for (int key : this.buttons.keySet())
-            if (this.buttons.get(key) != null)
-                map.put(key, this.buttons.get(key).clone());
-        return map;
+        return Maps.newHashMap(this.buttons);
     }
 
     /**
@@ -299,8 +299,6 @@ public class GameInventory implements InventoryHolder {
      * @throws UnsupportedOperationException if there are no search rows
      */
     protected void setBackButton(boolean backButton) {
-        if (searchStart == -1 && searchEnd == -1)
-            throw new UnsupportedOperationException("Cannot alter navigation is no search box is set!");
         this.backButton = backButton;
     }
 
@@ -315,8 +313,7 @@ public class GameInventory implements InventoryHolder {
         if (searchStart == -1 && searchEnd == -1)
             throw new UnsupportedOperationException("Cannot alter navigation is no search box is set!");
         if (inline) {
-            if (isBackButton())
-                this.topOffset += 1;
+            this.topOffset += 1;
             this.bottomOffset += 1;
         }
         this.inlineNav = inline;

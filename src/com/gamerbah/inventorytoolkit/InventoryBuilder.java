@@ -82,17 +82,16 @@ public class InventoryBuilder {
         if (number > maxPage || number < 0)
             throw new IllegalArgumentException("Number must be <= maxPage and >= 0");
         this.page = number;
-
         if (gameInventory.isShowPageNumbers()) {
             final int size = gameInventory.getInventory().getSize();
-            final String name = gameInventory.getInventory().getName();
+            final String name = gameInventory.getName();
             gameInventory.setInventory(Bukkit.getServer().createInventory(gameInventory, size,
                     name + " " + gameInventory.getPageNumberFormat().replace("%c", page + "").replace("%m", maxPage + "")));
         }
 
         int index = number * itemsPerPage;
         if (this.items.size() > 0) {
-            for (int i = (gameInventory.getSearchStart() * 9) + gameInventory.getTopOffset(); i < itemsPerPage; i++) {
+            for (int i = (gameInventory.getSearchStart() * 9) + gameInventory.getTopOffset(); i < ((gameInventory.getSearchEnd() + 1) * 9) - gameInventory.getBottomOffset(); i++) {
                 if (index < this.items.size()) {
                     gameInventory.getInventory().setItem(i, this.items.get(index++));
                 } else {
@@ -114,12 +113,17 @@ public class InventoryBuilder {
         }
         if (page > 0) {
             if (gameInventory.getPageRow() == -1) {
-                gameInventory.addButton(gameInventory.getSearchRows() * 9,
-                        getPreviousPageItem().clone().onClick(new ClickEvent(() -> this.previousPage().open())));
-            } else gameInventory.addButton(gameInventory.getPageRow() * 9,
+                if (!gameInventory.isInlineNav()) {
+                    gameInventory.addButton((gameInventory.getSearchRows() - 1) * 9,
+                            getPreviousPageItem().clone().onClick(new ClickEvent(() -> this.previousPage().open())));
+                } else {
+                    gameInventory.addButton(gameInventory.getSearchStart() * 9,
+                            getPreviousPageItem().clone().onClick(new ClickEvent(() -> this.previousPage().open())));
+                }
+            } else gameInventory.addButton((gameInventory.getPageRow() - 1) * 9,
                     getPreviousPageItem().clone().onClick(new ClickEvent(() -> this.previousPage().open())));
         } else if (page == 0)
-            if (gameInventory.isBackButton())
+            if (gameInventory.isBackButton()) {
                 if (gameInventory.getPageRow() != -1) {
                     gameInventory.addButton(9 * gameInventory.getPageRow(),
                             getBackItem().clone().onClick(new ClickEvent(() -> this.gameInventory.openPreviousInventory(player))));
@@ -128,6 +132,7 @@ public class InventoryBuilder {
                         gameInventory.addButton(gameInventory.getSearchStart() * 9,
                                 getBackItem().clone().onClick(new ClickEvent(() -> this.gameInventory.openPreviousInventory(player))));
                 }
+            }
         return this;
     }
 

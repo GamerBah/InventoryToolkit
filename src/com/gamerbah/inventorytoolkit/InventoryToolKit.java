@@ -2,7 +2,6 @@ package com.gamerbah.inventorytoolkit;
 /* Created by GamerBah on 3/11/2018 */
 
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +23,5 @@ public class InventoryToolKit extends JavaPlugin {
             metrics = new Metrics(this);
         getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
     }
-
 
 }
